@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+  <key>ReleaseDemoPlugin</key>
+  <version>1.0</version>
+  <label>ReleaseDemoPlugin</label>
+  <description>Install a functional release demo</description>
+  <category>Utility</category>
+  <author>Electric Cloud</author>
+  <help>help.xml</help>
+  <authorUrl />
+  <commander-version min="5.0" />
+</plugin>

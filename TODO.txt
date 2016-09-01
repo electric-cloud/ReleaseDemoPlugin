@@ -1,0 +1,22 @@
+[x] Add artifact version list to data structure
+[x] Add parameters to application models
+[x] Snapshot all versions
+[x] Fill in release environment
+[x] Multiple releases
+[x] Add instructions to manual step
+[] Different versions to different releases
+[x] Prefill environments with versions[0]
+[] Move versions from apps to releases data structure (currently referencing by index)
+[x] Clean on demote
+[] Replace runProcedure in artifacts.groovy with jobStep, or transactions
+
+[x] Each application
+	deploy version i = 0..n-1 to Dev
+		snapshot i
+	each environment
+		deploy snapshot i
+
+[] Command line demote doesn't seem to work
+[] Why no initial inventory in Release
+[] Move properties to /pluginProject/configure/
+[] Instructions to edit these properties
