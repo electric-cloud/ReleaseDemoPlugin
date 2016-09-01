@@ -12,9 +12,21 @@ def formatDate(d) {
 	return "${year}-${month}-${date}"
 }
 
+// Create an array of start and stop dates for releases
+startStopDates = []
+(0..2).each {
+    def start = new Date() + 1  + (it * 33)
+    def stop = new Date()  + (it * 33 + 33)
+    startStopDates.push(
+        start: formatDate(start),
+        stop: formatDate(stop),
+        month: new java.text.DateFormatSymbols().months[start.month]
+    )
+}
+
 /********* User editable properties ************/
-property "/projects/$pluginName/config/projName", value: "On line bank Release"
-property "/projects/$pluginName/config/artifactGroup", value: "com.mybank.apps"
+property "/projects/$pluginName/config/projName", value: "Online banking"
+property "/projects/$pluginName/config/artifactGroup", value: "com.acmebank.apps"
 /*
 	versionIndex selects the version from apps.versions[].  Use apps.version[0]
 	for initial environment snapshots.  Make sure that there are as many versions
@@ -27,26 +39,24 @@ property "/projects/$pluginName/config/artifactGroup", value: "com.mybank.apps"
 	plannedEndDate: (String) formatDate(new Date()+14),
 */
 
-
-
 property "/projects/$pluginName/config/releases", value: """\
 	[
 		[
-			name: "September 2016 Online Banking",
-			plannedStartDate: "${(String) formatDate(new Date())}",
-			plannedEndDate: "2016-09-30",
+			name: "${startStopDates[0].month} Online Banking",
+			plannedStartDate: "${startStopDates[0].start}",
+			plannedEndDate: "${startStopDates[0].start}",
 			versionIndex: 1
 		],
 		[
-			name: "October 2016 Online Banking",
-			plannedStartDate: "2016-10-01",
-			plannedEndDate: "2016-10-31",
+			name: "${startStopDates[1].month} Online Banking",
+			plannedStartDate: "${startStopDates[1].start}",
+			plannedEndDate: "${startStopDates[1].start}",
 			versionIndex: 2
 		],		
 		[
-			name: "November 2016 Online Banking",
-			plannedStartDate: "2016-11-01",
-			plannedEndDate: "2016-11-30",
+			name: "${startStopDates[2].month} Online Banking",
+			plannedStartDate: "${startStopDates[2].start}",
+			plannedEndDate: "${startStopDates[2].start}",
 			versionIndex: 3
 		],
 	]
