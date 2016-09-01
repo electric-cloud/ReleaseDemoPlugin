@@ -11,9 +11,12 @@ This plugin provide an out-of-the box ready-to-run set of release models.  These
 	* Save your changes
 	* Zip up the folders in the ReleaseDemoPlugin
 * Upload the plugin file (jar file provide or your own zip file)
-* Promote the plugin.  This will take a few minutes.  To monitor the progress, look at the job launched by the plugin promotion
+* Promote the plugin.  This will take about 4.5 minutes.  To monitor the progress, look at the job launched by the plugin promotion
 * Run one of the releases
 * Act on manual tasks or promotion prompts
 * Note inventory
 
+## Known issues
+Current the plugin only works on Linux type EF servers
+When demoting plugin, give it time to complete clean up (see Default project job) before promoting again
 
