@@ -1,7 +1,7 @@
-def apps = $[apps]
-def projName = "$[projName]"
-def artifactGroup = "$[artifactGroup]"
-def pipe  = $[pipe]
+def apps = $[/myProject/config/apps]
+def projName = "$[/myProject/config/projName]"
+def artifactGroup = "$[/myProject/config/artifactGroup]"
+def pipe  = $[/myProject/config/pipe]
 
 def appTier = "App"
 def envs = pipe.stages

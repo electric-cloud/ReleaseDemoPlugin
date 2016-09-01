@@ -1,5 +1,5 @@
-def pipe  = $[pipe]
-def projName = "$[projName]"
+def pipe  = $[/myProject/config/pipe]
+def projName = "$[/myProject/config/projName]"
 
 project projName, {
 

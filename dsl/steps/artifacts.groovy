@@ -1,5 +1,5 @@
-def artifactGroup = "$[artifactGroup]"
-def apps = $[apps]
+def artifactGroup = "$[/myProject/config/artifactGroup]"
+def apps = $[/myProject/config/apps]
 
 new File("/tmp/empty").createNewFile()
 
