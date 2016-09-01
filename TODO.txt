@@ -2,6 +2,8 @@
 [] Command line demote doesn't seem to work
 [] Why no initial inventory in Release (known issue, may need to run through pipeline once)
 [] Add configuration option
+[] Better synchronization of demote/promote, artifact creation, deployments.  Currently, relying on wait times.
+	- demote.groovy, wait for procedure to complete.  Move the procedure from Default project to plugin project
 
 [x] Add artifact version list to data structure
 [x] Add parameters to application models

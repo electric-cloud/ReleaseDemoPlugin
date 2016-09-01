@@ -65,12 +65,13 @@ del "${pluginKey}.jar" -ErrorAction SilentlyContinue
 dir -exclude .git | ? {$_.mode -match "d"} | Add-Zip "${pluginKey}.zip"
 Move-Item "${pluginKey}.zip" "${pluginKey}.jar"
 
-write-host "Demoting old plugin"
-ectool promotePlugin "$pluginName" --promoted false
 write-host "Uninstalling old plugin"
 ectool uninstallPlugin "$pluginName"
+
+
 write-host "Installing new plugin"
 ectool installPlugin "${pluginKey}.jar"
+
 write-host "Promoting new plugin"
 ectool promotePlugin "$pluginName"
 

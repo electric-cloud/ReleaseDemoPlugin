@@ -15,7 +15,7 @@ def formatDate(d) {
 // Create an array of start and stop dates for releases
 startStopDates = []
 (0..2).each {
-    def start = new Date() + 1  + (it * 33)
+    def start = new Date() + 2 + (it * 33)
     def stop = new Date()  + (it * 33 + 33)
     startStopDates.push(
         start: formatDate(start),
@@ -44,19 +44,19 @@ property "/projects/$pluginName/config/releases", value: """\
 		[
 			name: "${startStopDates[0].month} Online Banking",
 			plannedStartDate: "${startStopDates[0].start}",
-			plannedEndDate: "${startStopDates[0].start}",
+			plannedEndDate: "${startStopDates[0].stop}",
 			versionIndex: 1
 		],
 		[
 			name: "${startStopDates[1].month} Online Banking",
 			plannedStartDate: "${startStopDates[1].start}",
-			plannedEndDate: "${startStopDates[1].start}",
+			plannedEndDate: "${startStopDates[1].stop}",
 			versionIndex: 2
 		],		
 		[
 			name: "${startStopDates[2].month} Online Banking",
 			plannedStartDate: "${startStopDates[2].start}",
-			plannedEndDate: "${startStopDates[2].start}",
+			plannedEndDate: "${startStopDates[2].stop}",
 			versionIndex: 3
 		],
 	]
