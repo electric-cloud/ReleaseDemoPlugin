@@ -1,6 +1,16 @@
 # Release Demo Plugin
 This plugin provide an out-of-the box ready-to-run set of release models.  These models can be easily customized for particular demo situations.
 
+* Packaged as a plugin (using PluginLite)
+* Customizable (change to customer-specific names)
+* Snapshots for multiple version, makes showing path to production compliance easy
+* Out of the box with three releases, each with own dates and snap shot versions
+* Automatic dates and release names (monthly)
+* Prefilled environments (though release doesn’t currently show these in its inventory)
+* Manual steps instructions
+* Configuration parameter exposed per environment
+* Cleans up after itself on demotion.  Can demote then promote for a fresh demo.
+
 ## Installation and Configuration Instructions
 * (Optional) Customize the project, artifact names, applications, pipeline and/or release details
 	* Edit the file dsl/promote.groovy

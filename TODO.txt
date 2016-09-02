@@ -1,3 +1,12 @@
+[] Change pipeline name to "Monthly Online Banking"
+[] Windows support: Artifact storage location, currently /tmp.
+	if (System.getenv().TEMP) { // Windows
+		// Save to System.getenv().TEMP
+		"Windows"
+	} else { // Linux
+		// Save to /tmp
+		"Linux"
+	}
 [] Replace runProcedure in artifacts.groovy with jobStep, or transactions.  This will allow for Windows support.  Currently creating artifact file in /tmp.
 [] Command line demote doesn't seem to work
 [] Why no initial inventory in Release (known issue, may need to run through pipeline once)
