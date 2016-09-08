@@ -1,5 +1,5 @@
-def apps = $[/myProject/config/apps]
-def projName = "$[/myProject/config/projName]"
+def apps = $[/myJob/apps]
+def projName = "$[/myJob/projName]"
 
 def appTier = "App"
 

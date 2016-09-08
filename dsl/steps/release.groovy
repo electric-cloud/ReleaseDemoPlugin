@@ -1,7 +1,7 @@
-def pipe  = $[/myProject/config/pipe]
-def projName = "$[/myProject/config/projName]"
-def apps = $[/myProject/config/apps]
-def releases = $[/myProject/config/releases]
+def pipe  = $[/myJob/pipe]
+def projName = "$[/myJob/projName]"
+def apps = $[/myJob/apps]
+def releases = $[/myJob/releases]
 
 project projName, {
 	releases.each { rel ->

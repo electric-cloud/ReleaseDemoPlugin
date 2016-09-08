@@ -1,5 +1,5 @@
-def pipe  = $[/myProject/config/pipe]
-def projName = "$[/myProject/config/projName]"
+def pipe  = $[/myJob/pipe]
+def projName = "$[/myJob/projName]"
 
 def envTier = "App Server"
 

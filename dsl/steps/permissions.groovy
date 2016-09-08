@@ -1,4 +1,4 @@
-def projName = "$[/myProject/config/projName]"
+def projName = "$[/myJob/projName]"
 
 aclEntry projectName: "/plugins/EC-Artifact/project",
 	objectType: "project",

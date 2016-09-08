@@ -1,6 +1,6 @@
-def projName = "$[/myProject/config/projName]"
-def apps = $[/myProject/config/apps]
-def pipe = $[/myProject/config/pipe]
+def projName = "$[/myJob/projName]"
+def apps = $[/myJob/apps]
+def pipe = $[/myJob/pipe]
 
 pipe.stages.each { env ->
 	apps.each { app ->

@@ -1,32 +1,33 @@
 # Release Demo Plugin
-This plugin provide an out-of-the box ready-to-run set of release models.  These models can be easily customized for particular demo situations.
+This plugin provide a procedure that can be run with user-configurable parameters to generate a ready-to-run set of release models.
 
 * Packaged as a plugin (using PluginLite)
-* Customizable (change to customer-specific names)
+* Customizable through procedure parameters
+* Default parameters create three releases, each with own dates and snap shot versions
+* Can be run multiple times with different parameters
 * Snapshots for multiple version, makes showing path to production compliance easy
-* Out of the box with three releases, each with own dates and snap shot versions
 * Automatic dates and release names (monthly)
 * Prefilled environments (though release doesn’t currently show these in its inventory)
-* Manual steps instructions
+* Manual steps with instructions
 * Configuration parameter exposed per environment
-* Cleans up after itself on demotion.  Can demote then promote for a fresh demo.
+* Cleans up after itself on demotion, deleting all projects, artifacts and resources created from run procedures
 
 ## Installation and Configuration Instructions
-* (Optional) Customize the project, artifact names, applications, pipeline and/or release details
-	* Edit the file dsl/promote.groovy
-	* Scroll to the "User editable properties" section
-	* Adjust any of the names
-	* Add/remove applications, pipeline stages, and/or releases
-	* Adjust release dates (yyyy-mm-dd format)
-	* Save your changes
-	* Zip up the folders in the ReleaseDemoPlugin
 * Upload the plugin file (jar file provide or your own zip file)
-* Promote the plugin.  This will take about 4.5 minutes.  To monitor the progress, look at the job launched by the plugin promotion
+* Promote the plugin
+* Run the procedure, Administration>Plugins>ReleaseDemoPlugin>Create Release Model and edit parameter values as desired
+	* Project name
+	* Artifact group name
+	* Names, number of applications, artifacts and version
+	* Pipeline name and stages
+	* Release names and dates (yyyy-mm-dd format)
+
+## Demonstration Instructions	
 * Run one of the releases
 * Act on manual tasks or promotion prompts
 * Note inventory
 
 ## Known issues
 Current the plugin only works on Linux type EF servers
-When demoting plugin, give it time to complete clean up (see Default project job) before promoting again
+Currently, only one release project can be created because resource names are not unique to project
 

@@ -63,7 +63,7 @@ property "/projects/$pluginName/config/releases", value: """\
 """.stripIndent()
 property "/projects/$pluginName/config/pipe", value: '''\
 	[
-		name: "Quarterly Online Banking",
+		name: "Monthly Online Banking",
 		stages: ["UAT", "STG", "PROD"]
 	]
 '''.stripIndent()
@@ -95,8 +95,61 @@ project pluginName,{
 	property "clean" // commands to clean up after this plugin
 	property "ec_visibility", value: "hidden" // Legal values: pickListOnly, hidden, all
 	procedure "Create Release Model",{
+	
+		formalParameter "projName", required: "true"
+		formalParameter "artifactGroup", required: "true"
+		formalParameter "apps", required: "true"
+		formalParameter "pipe", required: "true"
+		formalParameter "releases", required: "true"
+		
+		property "ec_parameterForm", value: '''\
+			<editor>
+				<formElement>
+					<property>projName</property>
+					<label>Project Name</label>
+					<documentation>The name of the project where the release and supporting assets are to be stored.</documentation>
+					<type>entry</type>
+					<required>true</required>
+					<value>$[/myProject/config/projName]</value>
+				</formElement>
+				<formElement>
+					<property>artifactGroup</property>
+					<label>Artifact Group Name</label>
+					<documentation>The group name for artifacts used, for example, com.mycompany.myapp</documentation>
+					<type>entry</type>
+					<required>true</required>
+					<value>$[/myProject/config/artifactGroup]</value>
+				</formElement>
+				<formElement>
+					<property>apps</property>
+					<label>Application definitions</label>
+					<documentation>A Groovy data structure describing the applications to be created</documentation>
+					<type>textarea</type>
+					<required>true</required>
+					<value>$[/myProject/config/apps]</value>
+				</formElement>
+				<formElement>
+					<property>pipe</property>
+					<label>Release pipeline definition</label>
+					<documentation>A Groovy data structure describing the release pipeline to be created</documentation>
+					<type>textarea</type>
+					<required>true</required>
+					<value>$[/myProject/config/pipe]</value>
+				</formElement>
+				<formElement>
+					<property>releases</property>
+					<label>Release definitions</label>
+					<documentation>A Groovy data structure describing the releases to be created</documentation>
+					<type>textarea</type>
+					<required>true</required>
+					<value>$[/myProject/config/releases]</value>
+				</formElement>
+			</editor>
+		'''.stripIndent()
+	
 		//step "Set up properties", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "properties.groovy").text
 		step "Set initial clean property", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "initialClean.groovy").text
+		step "Add project to clean list", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "cleanProject.groovy").text
 		step "Set up permissions", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "permissions.groovy").text
 		step "Set up artifacts", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "artifacts.groovy").text
 		step "Set up environments", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "env.groovy").text
@@ -110,6 +163,8 @@ project pluginName,{
 	} // procedure "Create Release Model"
 } // project pluginName
 
+/*
 transaction {
 	runProcedure projectName: pluginName, procedureName: "Create Release Model"
 } 
+*/

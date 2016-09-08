@@ -13,10 +13,14 @@ project "Default",{
 		clean.tokenize('\n').each {
 			step "Clean " + stepNumber++,
 				command: it
+			step "Remove clean property",
+				command: "ectool deleteProperty \"/projects/$pluginName/clean\""
+			step "Delete this procedure",
+				command: 'ectool deleteProcedure "$[/myProject/projectName]" "$[/myProcedure/procedureName]"'
 		}
 	} // procedure "Clean Release Model"
-} // project pluginName
+} // project "Default"
 
 transaction {
-	runProcedure projectName: "Default", procedureName: "Clean Release Model"
-} 
+	runProcedure(projectName: "Default", procedureName: "Clean Release Model")
+}

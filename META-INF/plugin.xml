@@ -1,12 +1,11 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
 <plugin>
-  <key>ReleaseDemoPlugin</key>
-  <version>1.0</version>
-  <label>ReleaseDemoPlugin</label>
-  <description>Install a functional release demo</description>
-  <category>Utility</category>
   <author>Electric Cloud</author>
-  <help>help.xml</help>
-  <authorUrl />
+  <authorUrl></authorUrl>
+  <category>Utility</category>
   <commander-version min="5.0" />
+  <description>Creates a procedure that can be used to create a functional release demo</description>
+  <help>help.xml</help>
+  <key>ReleaseDemoPlugin</key>
+  <label>ReleaseDemoPlugin</label>
+  <version>1.1</version>
 </plugin>

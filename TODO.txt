@@ -1,4 +1,3 @@
-[] Change pipeline name to "Monthly Online Banking"
 [] Windows support: Artifact storage location, currently /tmp.
 	if (System.getenv().TEMP) { // Windows
 		// Save to System.getenv().TEMP
@@ -9,11 +8,24 @@
 	}
 [] Replace runProcedure in artifacts.groovy with jobStep, or transactions.  This will allow for Windows support.  Currently creating artifact file in /tmp.
 [] Command line demote doesn't seem to work
-[] Why no initial inventory in Release (known issue, may need to run through pipeline once)
-[] Add configuration option
+[] Why no initial inventory in Release (known issue, may need to run through pipeline once).  Skip non-deploy tasks.
+	project "test",{
+	  pipeline "test",{
+		//formalParameter "normalMode", "1"
+		stage "test",{
+		  task "test", taskType: "MANUAL", condition: '$[/myProject/normalMode]'
+		}
+	  }
+	}
+	Don't use a parameters, prompts and has to be added to release model
+	or, is there a seeding API?
 [] Better synchronization of demote/promote, artifact creation, deployments.  Currently, relying on wait times.
 	- demote.groovy, wait for procedure to complete.  Move the procedure from Default project to plugin project
 
+v1.1
+[x] Add configuration option
+[x] Change pipeline name to "Monthly Online Banking"
+v1.0
 [x] Add artifact version list to data structure
 [x] Add parameters to application models
 [x] Snapshot all versions
