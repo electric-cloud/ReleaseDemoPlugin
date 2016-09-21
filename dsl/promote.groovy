@@ -94,6 +94,17 @@ def stepDir = pluginDir + "/dsl/steps/"
 project pluginName,{
 	property "clean" // commands to clean up after this plugin
 	property "ec_visibility", value: "hidden" // Legal values: pickListOnly, hidden, all
+	
+		
+	procedure "createArtifacts",{
+		formalParameter "_versions", defaultValue: '$[/myJob/versions]'
+		formalParameter "_artifactKeys", defaultValue: '$[/myJob/artifactKeys]'
+		formalParameter "_artifactGroup", defaultValue: '$[/myJob/artifactGroup]'
+		
+		step "createArtifacts", shell: "ec-perl",
+			command: new File(pluginDir + "/dsl/steps/createArtifacts.pl").text
+	}
+	
 	procedure "Create Release Model",{
 	
 		formalParameter "projName", required: "true"
@@ -152,6 +163,7 @@ project pluginName,{
 		step "Add project to clean list", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "cleanProject.groovy").text
 		step "Set up permissions", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "permissions.groovy").text
 		step "Set up artifacts", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "artifacts.groovy").text
+		step "Publish artifacts", subproject: projectName, subprocedure: "createArtifacts"
 		step "Set up environments", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "env.groovy").text
 		step "Set up applications", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "app.groovy").text
 		step "Deploy and snapshot all apps versions to Dev", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "deployDevSnap.groovy").text
@@ -161,6 +173,7 @@ project pluginName,{
 		step "Set up pipeline", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "pipeline.groovy").text
 		step "Set up releases", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "release.groovy").text
 	} // procedure "Create Release Model"
+
 } // project pluginName
 
 /*

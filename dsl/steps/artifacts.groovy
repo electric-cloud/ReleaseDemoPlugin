@@ -1,26 +1,23 @@
+def projName = "$[/myJob/projName]"
 def artifactGroup = "$[/myJob/artifactGroup]"
 def apps = $[/myJob/apps]
 
-new File("/tmp/empty").createNewFile()
+new File("empty").createNewFile()
 
 def artifacts = []
+def versions = []
+def artifactKeys = []
 
 apps.each { app ->
 	artifacts.push("${artifactGroup}:${app.artifactKey}")
 	app.versions.each { ver -> 
-		runProcedure (
-			projectName: '/plugins/EC-Artifact/project',
-			procedureName: 'Publish',
-			actualParameter : [
-				artifactName: (String) "${artifactGroup}:${app.artifactKey}",
-				artifactVersionVersion: ver,  // required
-				fromLocation: '/tmp',
-				includePatterns: 'empty',
-				repositoryName: 'default',  // required
-			]
-		)
+		versions.push(ver)
+		artifactKeys.push(app.artifactKey)
 	}
 }
+
+property "/myJob/versions", value: versions.join(",")
+property "/myJob/artifactKeys", value: artifactKeys.join(",")
 
 def clean = getProperty("/myProject/clean").value
 artifacts.each {

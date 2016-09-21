@@ -5,6 +5,7 @@
 #	1.0 - Initial working version
 #	1.1 - Parameterized procedure
 #     git commit . -m "v1.1 Parameterized procedure, closes #1"
+#   1.2 - Improved artifact creation, platform independent, separate steps
 #
 use Getopt::Long;
 use XML::Simple qw(:strict);
@@ -16,7 +17,7 @@ use ElectricCommander ();
 $| = 1;
 my $ec = new ElectricCommander->new();
 
-my $version = "1.1";
+my $version = "1.2";
 my $pluginKey = "ReleaseDemoPlugin";
 my $description = "Creates a procedure that can be used to create a functional release demo";
 GetOptions ("version=s" => \$version,

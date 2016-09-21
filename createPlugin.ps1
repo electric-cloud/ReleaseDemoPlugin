@@ -1,6 +1,6 @@
 param (
     [string]$pluginKey = "ReleaseDemoPlugin",
-	[string]$version = "1.0",
+	[string]$version = "1.2",
 	[string]$description = "Install a functional release demo"
 )
 
