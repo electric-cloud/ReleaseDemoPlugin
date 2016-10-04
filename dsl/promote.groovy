@@ -102,7 +102,7 @@ project pluginName,{
 		formalParameter "_artifactGroup", defaultValue: '$[/myJob/artifactGroup]'
 		
 		step "createArtifacts", shell: "ec-perl",
-			command: new File(pluginDir + "/dsl/createArtifacts.pl").text
+			command: new File(pluginDir + "/dsl/steps/createArtifacts.pl").text
 	}
 	
 	procedure "Create Release Model",{
@@ -113,7 +113,7 @@ project pluginName,{
 		formalParameter "pipe", required: "true"
 		formalParameter "releases", required: "true"
 		
-		property "ec_parameterForm", value: new File(pluginDir + "/dsl/steps/ec_parameterForm.xml").text
+		property "ec_parameterForm", value: new File(pluginDir + "/dsl/ec_parameterForm.xml").text
 		
 		property "runModelSteps", "1"
 		
