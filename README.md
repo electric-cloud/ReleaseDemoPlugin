@@ -15,7 +15,7 @@ This plugin provide a procedure that can be run with user-configurable parameter
 ## Installation and Configuration Instructions
 * Upload the plugin file (jar file provide or your own zip file)
 * Promote the plugin
-* Run the procedure, Administration>Plugins>ReleaseDemoPlugin>Create Release Model and edit parameter values as desired
+* Run the procedure, Release Demo :: Create Release Model and edit parameter values as desired:
 	* Project name
 	* Artifact group name
 	* Names, number of applications, artifacts and version
@@ -28,6 +28,4 @@ This plugin provide a procedure that can be run with user-configurable parameter
 * Note inventory
 
 ## Known issues
-Current the plugin only works on Linux type EF servers
-Currently, only one release project can be created because resource names are not unique to project
-
+Timeouts may occur on some of the steps due to DSL process; try increasing the DSL timeout (Server settings "Max DSL duration")
