@@ -113,50 +113,7 @@ project pluginName,{
 		formalParameter "pipe", required: "true"
 		formalParameter "releases", required: "true"
 		
-		property "ec_parameterForm", value: '''\
-			<editor>
-				<formElement>
-					<property>projName</property>
-					<label>Project Name</label>
-					<documentation>The name of the project where the release and supporting assets are to be stored.</documentation>
-					<type>entry</type>
-					<required>true</required>
-					<value>$[/myProject/config/projName]</value>
-				</formElement>
-				<formElement>
-					<property>artifactGroup</property>
-					<label>Artifact Group Name</label>
-					<documentation>The group name for artifacts used, for example, com.mycompany.myapp</documentation>
-					<type>entry</type>
-					<required>true</required>
-					<value>$[/myProject/config/artifactGroup]</value>
-				</formElement>
-				<formElement>
-					<property>apps</property>
-					<label>Application definitions</label>
-					<documentation>A Groovy data structure describing the applications to be created</documentation>
-					<type>textarea</type>
-					<required>true</required>
-					<value>$[/myProject/config/apps]</value>
-				</formElement>
-				<formElement>
-					<property>pipe</property>
-					<label>Release pipeline definition</label>
-					<documentation>A Groovy data structure describing the release pipeline to be created</documentation>
-					<type>textarea</type>
-					<required>true</required>
-					<value>$[/myProject/config/pipe]</value>
-				</formElement>
-				<formElement>
-					<property>releases</property>
-					<label>Release definitions</label>
-					<documentation>A Groovy data structure describing the releases to be created</documentation>
-					<type>textarea</type>
-					<required>true</required>
-					<value>$[/myProject/config/releases]</value>
-				</formElement>
-			</editor>
-		'''.stripIndent()
+		property "ec_parameterForm", value: new File(pluginDir + "/dsl/steps/ec_parameterForm.xml").text
 		
 		property "runModelSteps", "1"
 		
