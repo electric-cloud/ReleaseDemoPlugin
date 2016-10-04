@@ -10,7 +10,7 @@ apps.each { app ->
 			runProcess projectName: projName,
 				applicationName: app.name,
 				processName: "Deploy",
-				environmentName: "Dev",
+				environmentName: "Commit",
 				actualParameter : [
 					(verParam): ver
 				]
@@ -20,7 +20,7 @@ apps.each { app ->
 			snapshot projectName: projName,
 				applicationName: app.name,
 				snapshotName: ver,
-				environmentName: "Dev",
+				environmentName: "Commit",
 				environmentprojectName: projName
 		}
 	}

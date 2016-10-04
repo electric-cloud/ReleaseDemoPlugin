@@ -5,7 +5,7 @@ def pipe  = $[/myJob/pipe]
 
 def appTier = "App"
 def envs = pipe.stages
-envs.push("Dev")
+envs.push("Commit")
 
 apps.each { app -> 
 	project projName, {

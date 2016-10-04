@@ -168,7 +168,7 @@ project pluginName,{
 		step "Publish artifacts", subproject: projectName, subprocedure: "createArtifacts"
 		step "Set up environments", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "env.groovy").text, condition: '$[/myProcedure/runModelSteps]'
 		step "Set up applications", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "app.groovy").text, condition: '$[/myProcedure/runModelSteps]'
-		step "Deploy and snapshot all apps versions to Dev", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "deployDevSnap.groovy").text, condition: '$[/myProcedure/runModelSteps]'
+		step "Deploy and snapshot all apps versions to Commit", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "deployCommitSnap.groovy").text, condition: '$[/myProcedure/runModelSteps]'
 		step "Deploy snaphot versions[0] to upper environments", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "deployUpper.groovy").text, condition: '$[/myProcedure/runModelSteps]'
 		//step "Wait for deployments", shell: "ec-perl", command: "sleep 10"
 		//step "Set up snapshots", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "snapshots.groovy").text

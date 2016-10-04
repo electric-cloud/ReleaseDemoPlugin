@@ -4,7 +4,7 @@ def projName = "$[/myJob/projName]"
 def envTier = "App Server"
 
 def envs = pipe.stages
-envs.push("Dev")
+envs.push("Commit")
 
 def resources = []
 
