@@ -13,7 +13,7 @@ project projName, {
 		environment env, {
 			environmentTier envTier, {
 				// create and add resource to the Tier
-				res = "${env}_${envTier}"
+				res = "${env}_${projName}_${envTier}"
 				resources.push(res)
 				resource resourceName: res, hostName : "localhost"
 			} // environmentTier
