@@ -102,7 +102,7 @@ project pluginName,{
 		formalParameter "_artifactGroup", defaultValue: '$[/myJob/artifactGroup]'
 		
 		step "createArtifacts", shell: "ec-perl",
-			command: new File(pluginDir + "/dsl/steps/createArtifacts.pl").text
+			command: new File(pluginDir + "/dsl/createArtifacts.pl").text
 	}
 	
 	procedure "Create Release Model",{
