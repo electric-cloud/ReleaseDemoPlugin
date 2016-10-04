@@ -2,10 +2,12 @@
 # Build, upload and promote ReleaseDemoPlugin
 #
 # Revision History
-#	1.0 - Initial working version
+#   2.0 - Renamed.  Broke up multiple steps.  Resource unique.
+#   1.2 - Improved artifact creation, platform independent, separate steps
 #	1.1 - Parameterized procedure
 #     git commit . -m "v1.1 Parameterized procedure, closes #1"
-#   1.2 - Improved artifact creation, platform independent, separate steps
+#	1.0 - Initial working version
+
 #
 use Getopt::Long;
 use XML::Simple qw(:strict);
@@ -17,8 +19,8 @@ use ElectricCommander ();
 $| = 1;
 my $ec = new ElectricCommander->new();
 
-my $version = "1.2";
-my $pluginKey = "ReleaseDemoPlugin";
+my $version = "2.0";
+my $pluginKey = "Release Demo";
 my $description = "Creates a procedure that can be used to create a functional release demo";
 GetOptions ("version=s" => \$version,
 			"pluginKey=s"   => \$pluginKey,

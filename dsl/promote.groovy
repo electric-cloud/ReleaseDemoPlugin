@@ -93,7 +93,7 @@ property "/projects/$pluginName/config/apps", value: '''\
 def stepDir = pluginDir + "/dsl/steps/"
 project pluginName,{
 	property "clean" // commands to clean up after this plugin
-	property "ec_visibility", value: "hidden" // Legal values: pickListOnly, hidden, all
+	property "ec_visibility", value: "all" // Legal values: pickListOnly, hidden, all
 	
 		
 	procedure "createArtifacts",{
