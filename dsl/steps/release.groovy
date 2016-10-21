@@ -21,10 +21,10 @@ project projName, {
 								pipe.stages.each { st ->
 									deployerConfiguration environmentName: st,
 										environmentprojectName: projName,
-										stageName: st,{
+										stageName: st,
                                           actualParameter: [
                                           	changeType: "full"  
-                                          ]										}
+                                          ]
 								} // Each stage
 							} // Deployer application
 						} // Each application
