@@ -22,8 +22,9 @@ project projName, {
 									deployerConfiguration environmentName: st,
 										environmentprojectName: projName,
 										stageName: st,{
-											actualParameter 'changeType', "full"
-										}
+                                          actualParameter: [
+                                          	changeType: "full"  
+                                          ]										}
 								} // Each stage
 							} // Deployer application
 						} // Each application
