@@ -2,6 +2,7 @@
 # Build, upload and promote ReleaseDemoPlugin
 #
 # Revision History
+#	3.0 - Add multiple tiers, rollback, rolling deploy, reservation
 #   2.0 - Renamed.  Broke up multiple steps.  Resource unique.
 #   1.2 - Improved artifact creation, platform independent, separate steps
 #	1.1 - Parameterized procedure
@@ -19,7 +20,7 @@ use ElectricCommander ();
 $| = 1;
 my $ec = new ElectricCommander->new();
 
-my $version = "2.0";
+my $version = "3.0";
 my $pluginKey = "Release Demo";
 my $description = "Creates a procedure that can be used to create a functional release demo";
 GetOptions ("version=s" => \$version,
