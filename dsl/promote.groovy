@@ -72,17 +72,20 @@ property "/projects/$pluginName/config/apps", value: '''\
 		[
 			name: "Account Statements",
 			artifactKey: "statements",
-			versions: ["2.1","2.2","2.3","2.4"]
+			versions: ["2.1","2.2","2.3","2.4"],
+			tiers: ["app":"Apache","db":"Oracle","web":"JBoss"]
 		],
 		[
 			name: "Credit Card Accounts",
 			artifactKey: "cards",
-			versions: ["5.0","5.1","5.5","5.7"]
+			versions: ["5.0","5.1","5.5","5.7"],
+			tiers: ["app":"Apache","db":"Oracle","web":"JBoss"]
 		],
 		[
 			name: "Fund Transfer",
 			artifactKey: "fund",
-			versions: ["1.7","1.8","2.0","2.1"]
+			versions: ["1.7","1.8","2.0","2.1"],
+			tiers: ["app":"Apache","db":"Oracle","web":"JBoss"]
 		]
 	]
 '''.stripIndent()
@@ -100,12 +103,14 @@ project pluginName,{
 		formalParameter "_versions", defaultValue: '$[/myJob/versions]'
 		formalParameter "_artifactKeys", defaultValue: '$[/myJob/artifactKeys]'
 		formalParameter "_artifactGroup", defaultValue: '$[/myJob/artifactGroup]'
+		formalParameter "_appTiers", defaultValue: '$[/myJob/appTiers]'
 		
 		step "createArtifacts", shell: "ec-perl",
 			command: new File(pluginDir + "/dsl/steps/createArtifacts.pl").text
 	}
 	
-	procedure "Create Release Model",{
+	procedure "Create Release Model",
+		description: "Run me to create a Release model", {
 	
 		formalParameter "projName", required: "true"
 		formalParameter "artifactGroup", required: "true"
@@ -121,6 +126,7 @@ project pluginName,{
 		step "Set initial clean property", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "initialClean.groovy").text
 		step "Add project to clean list", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "cleanProject.groovy").text
 		step "Set up permissions", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "permissions.groovy").text
+		step "Create Application Validation Procedure", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "appValidation.groovy").text
 		step "Set up artifacts", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "artifacts.groovy").text
 		step "Publish artifacts", subproject: projectName, subprocedure: "createArtifacts"
 		step "Set up environments", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "env.groovy").text, condition: '$[/myProcedure/runModelSteps]'
@@ -132,7 +138,7 @@ project pluginName,{
 		step "Set up pipeline", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "pipeline.groovy").text, condition: '$[/myProcedure/runModelSteps]'
 		step "Set up releases", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "release.groovy").text, condition: '$[/myProcedure/runModelSteps]'
 	} // procedure "Create Release Model"
-
+	
 } // project pluginName
 
 /*

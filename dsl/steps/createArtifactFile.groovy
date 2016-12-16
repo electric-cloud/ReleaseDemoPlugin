@@ -5,6 +5,6 @@ createJobStep jobStepName: "Create file",
 	actualParameter : [
 		AddNewLine: '1',
 		Append: '1',
-		Content: '',  // required
-		Path: 'empty',  // required
+		Content: 'echo Installing...',  // required
+		Path: 'installer.sh',  // required
 	]
