@@ -19,10 +19,11 @@ apps.each { app ->
 							ec_content_details.with { 
 								pluginprojName = "EC-Artifact"
 								pluginProcedure = "Retrieve"
-								artifactName = "${artifactGroup}.${app.artifactKey}:${appTier}"
+								artifactName = "${artifactGroup}.${app.artifactName}:${appTier}"
 								filterList = ""
 								overwrite = "update"
-								versionRange = app.versions[1]
+								//versionRange = app.versions[1]
+								versionRange = ""
 								artifactVersionLocationProperty = "retrievedArtifactVersions/\$" + "[assignedResourceName]"
 							}
 
@@ -43,7 +44,7 @@ apps.each { app ->
 										artifactVersionLocationProperty : "\$" + "[/myComponent/ec_content_details/artifactVersionLocationProperty]",
 										filterList : "\$" + "[/myComponent/ec_content_details/filterList]",
 										overwrite : "\$" + "[/myComponent/ec_content_details/overwrite]",
-										versionRange : "\$" + "[ec_" + app.artifactKey + "-version]"
+										versionRange : "\$" + "[ec_" + app.artifactName + "-version]"
 									]
 								/*
 								processStep processStepName: "Deploy Artifact",
