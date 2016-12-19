@@ -47,6 +47,7 @@ apps.each { app ->
 										versionRange : "\$" + "[ec_" + app.artifactName + "-version]"
 									]
 								processStep processStepName: "Deploy Artifact",
+									errorHandling: 'failProcedure',
 									processStepType: 'command',
 									subproject: '/plugins/EC-Core/project',
 									subprocedure: 'RunCommand',
@@ -93,7 +94,7 @@ apps.each { app ->
 						dependencyJoinType = 'or'
 					}
 					
-					processDependency 'Validation', targetProcessStepName: "Rollback", branchType: 'ERROR',
+					processDependency 'Validation', targetProcessStepName: "Rollback", branchType: 'ALWAYS',
 						branchCondition: '$'+'[/javascript myJob.outcome=="error"]',
 						branchConditionName:  'On error',
 						branchConditionType:  'CUSTOM'					
