@@ -24,7 +24,7 @@ apps.each { app ->
 								overwrite = "update"
 								//versionRange = app.versions[1]
 								versionRange = ""
-								artifactVersionLocationProperty = "retrievedArtifactVersions/\$" + "[assignedResourceName]"
+								artifactVersionLocationProperty = "/myJob/retrievedArtifactVersions/\$" + "[assignedResourceName]"
 							}
 
 							process processName: "Install",
@@ -46,7 +46,6 @@ apps.each { app ->
 										overwrite : "\$" + "[/myComponent/ec_content_details/overwrite]",
 										versionRange : "\$" + "[ec_" + app.artifactName + "-version]"
 									]
-								/*
 								processStep processStepName: "Deploy Artifact",
 									processStepType: 'command',
 									subproject: '/plugins/EC-Core/project',
@@ -56,7 +55,7 @@ apps.each { app ->
 										// Windows: "fullPathToFile\installer.bat"
 										commandToRun: '$' + '[/javascript myResource.hostPlatform=="linux"?"sh ":""]' +
 										'\"' + // Quote entire command
-										'$' + '[retrievedArtifactVersions/$' + '[assignedResourceName]/' + 
+										'$' + '[/myJob/retrievedArtifactVersions/$' + '[assignedResourceName]/' + 
 										'$' + '[/myComponent/ec_content_details/artifactName]/cacheLocation]' + 
 										'$' + '[/javascript myResource.hostPlatform=="linux"?"/":"\\\\"]' + // Slash direction 
 										'installer.' + '$' + '[/javascript myResource.hostPlatform=="linux"?"sh":"bat"]' + '\"'
@@ -69,7 +68,6 @@ apps.each { app ->
 									processStepName: "Retrieve Artifact",
 									targetProcessStepName: "Deploy Artifact"
 									
-								*/
 									
 							} // process processName: "Install"
 						} // component componentName

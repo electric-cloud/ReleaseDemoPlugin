@@ -2,12 +2,17 @@ def apps = $[/myJob/apps]
 def projName = "$[/myJob/projName]"
 def artifactGroup = "$[/myJob/artifactGroup]"
 
+def cleanArtifacts = []
+
 project projName, {
 
 	pipeline "Commit", {
 		stage "Commit", {
 		
 			apps.each { app ->
+			
+				cleanArtifacts.push("${artifactGroup}.${app.artifactName}")
+			
 				app.versions.each { ver ->
 					task "Build $app.name $ver",
 						taskType: 'PROCEDURE',
@@ -40,7 +45,25 @@ project projName, {
 						subproject: projectName,
 						taskType: 'PROCEDURE'
 				} // version
+				
+				task "Build $app.name - Bad version for rollback",
+					taskType: 'PROCEDURE',
+					subproject: projName,
+					subprocedure: "Build artifacts",
+					actualParameter: [
+						appName: app.name,
+						artGroup: artifactGroup,
+						artVersion: "bad",
+						artName: app.artifactName,
+						causeRollback: "1"
+					]				
 			} // app
 		} // stage
 	} // Pipeline
 } // Project
+
+def clean = getProperty("/myProject/clean").value
+cleanArtifacts.each {
+	clean += "ectool deleteArtifact \"$it\"\n"
+}
+setProperty "/myProject/clean", value: clean

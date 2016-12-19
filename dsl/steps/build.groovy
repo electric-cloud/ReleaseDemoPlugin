@@ -32,7 +32,7 @@ project projName,{
 				command: """\
 					echo running build \$[appName] \$[artGroup].\$[artName]:${artKey}:\$[artVersion]-\$[/increment /myProject/buildCount]
 					echo creating installer.sh
-					echo Installing \$[appName] \$[artGroup].\$[artName]:${artKey}:\$[artVersion]-\$[/myProject/buildCount] > installer.sh
+					echo echo Installing \$[appName] \$[artGroup].\$[artName]:${artKey}:\$[artVersion]-\$[/myProject/buildCount] > installer.sh
 					echo exit \$[causeRollback] >> installer.sh
 					exit \$[buildErrorLevel]
 				""".stripIndent()

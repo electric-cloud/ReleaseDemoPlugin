@@ -99,16 +99,6 @@ project pluginName,{
 	property "ec_visibility", value: "all" // Legal values: pickListOnly, hidden, all
 	
 		
-	procedure "createArtifacts",{
-		formalParameter "_versions", defaultValue: '$[/myJob/versions]'
-		formalParameter "_artifactNames", defaultValue: '$[/myJob/artifactNames]'
-		formalParameter "_artifactGroup", defaultValue: '$[/myJob/artifactGroup]'
-		formalParameter "_appTiers", defaultValue: '$[/myJob/appTiers]'
-		
-		step "createArtifacts", shell: "ec-perl",
-			command: new File(pluginDir + "/dsl/steps/createArtifacts.pl").text
-	}
-	
 	procedure "Create Release Model",
 		description: "Run me to create a Release model", {
 	

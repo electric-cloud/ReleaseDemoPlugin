@@ -5,3 +5,9 @@ aclEntry projectName: "/plugins/EC-Artifact/project",
 	principalName: "project: $projName",
 	principalType: "user",
 	executePrivilege: "allow"
+
+aclEntry projectName: "/plugins/EC-Core/project",
+	objectType: "project",
+	principalName: "project: $projName",
+	principalType: "user",
+	executePrivilege: "allow"
