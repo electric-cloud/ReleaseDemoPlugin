@@ -97,7 +97,6 @@ def stepDir = pluginDir + "/dsl/steps/"
 project pluginName,{
 	property "clean" // commands to clean up after this plugin
 	property "ec_visibility", value: "all" // Legal values: pickListOnly, hidden, all
-	
 		
 	procedure "Create Release Model",
 		description: "Run me to create a Release model", {
@@ -123,7 +122,14 @@ project pluginName,{
 		step "Set up environments", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "env.groovy").text, condition: '$[/myProcedure/runModelSteps]'
 		step "Set up applications", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "app.groovy").text, condition: '$[/myProcedure/runModelSteps]'
 		step "Create Commit Pipeline", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "commitPipeline.groovy").text, condition: '$[/myProcedure/runModelSteps]'
-		step "Run Commit Pipeline", command: 'ectool runPipeline "$[/myJob/projName]" Commit', condition: '$[/myProcedure/runModelSteps]', description: "Builds all versions and creates snapshots for them"
+		step "Run Commit Pipeline", description: "Builds all versions and creates snapshots for them",
+			subproject: '$[/myJob/projName]',
+			subprocedure: 'Run pipeline',
+			actualParameter: [
+				projName: '$[/myJob/projName]',
+				pipeName: 'Commit'
+			]
+			condition: '$[/myProcedure/runModelSteps]'
 		//step "Deploy snaphot versions[0] to upper environments", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "deployUpper.groovy").text, condition: '$[/myProcedure/runModelSteps]'
 		//step "Set up snapshots", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "snapshots.groovy").text
 		step "Set up release pipeline", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "pipeline.groovy").text, condition: '$[/myProcedure/runModelSteps]'

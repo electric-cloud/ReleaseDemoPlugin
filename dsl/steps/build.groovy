@@ -64,4 +64,32 @@ project projName,{
 					environmentprojectName: "$projectName"				
 			""".stripIndent()
 	} // procedure "snapshot"
+	
+	procedure "Run pipeline", description: "Run and wait for pipeline to complete",{
+	
+		formalParameter "projName"
+		formalParameter "pipeName"
+		
+		step "Run pipeline", shell: "ec-perl",
+			command: '''\
+				use strict;
+				use ElectricCommander ();
+				$| = 1;
+				my $ec = new ElectricCommander->new({format=>"json"});
+				my $resp = $ec->runPipeline({projectName=>"$[projName]", pipelineName=>"$[pipeName]"});
+				my $flowRuntimeId = $resp->{responses}[0]->{flowRuntime}->{flowRuntimeId};
+				sub getStatus($) {
+						my $status = $ec->getPipelineRuntimeDetails({flowRuntimeId=>$flowRuntimeId});
+						return $status->{responses}[0]->{flowRuntime}[0]->{status};
+				}
+
+				while (getStatus($flowRuntimeId) eq "running") {
+						print "Waiting for pipeline to complete\n";
+						sleep 5;
+				}
+				print getStatus($flowRuntimeId);
+
+			'''.stripIndent()
+	}
+	
 }

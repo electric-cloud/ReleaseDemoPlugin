@@ -94,7 +94,7 @@ apps.each { app ->
 					}
 					
 					processDependency 'Validation', targetProcessStepName: "Rollback", branchType: 'ERROR',
-						branchCondition: '$[/javascript myJob.outcome=="error"]',
+						branchCondition: '$'+'[/javascript myJob.outcome=="error"]',
 						branchConditionName:  'On error',
 						branchConditionType:  'CUSTOM'					
 					

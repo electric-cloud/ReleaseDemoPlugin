@@ -10,8 +10,10 @@ project projName, {
 		stage "Commit", {
 		
 			apps.each { app ->
-			
-				cleanArtifacts.push("${artifactGroup}.${app.artifactName}")
+				
+				app.tiers.each { appTier, envTier ->
+					cleanArtifacts.push("${artifactGroup}.${app.artifactName}:${appTier}")
+				}
 			
 				app.versions.each { ver ->
 					task "Build $app.name $ver",
