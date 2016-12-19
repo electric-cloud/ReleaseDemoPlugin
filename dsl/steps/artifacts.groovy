@@ -2,22 +2,27 @@ def projName = "$[/myJob/projName]"
 def artifactGroup = "$[/myJob/artifactGroup]"
 def apps = $[/myJob/apps]
 
-new File("empty").createNewFile()
+new File("installer.sh").createNewFile()
 
 def artifacts = []
 def versions = []
 def artifactKeys = []
+def appTiers = []
 
 apps.each { app ->
-	artifacts.push("${artifactGroup}:${app.artifactKey}")
-	app.versions.each { ver -> 
-		versions.push(ver)
-		artifactKeys.push(app.artifactKey)
-	}
-}
+	app.tiers.each { appTier, envTier ->
+		artifacts.push("${artifactGroup}.${app.artifactKey}:${appTier}")
+		app.versions.each { ver -> 
+			versions.push(ver)
+			artifactKeys.push(app.artifactKey)
+			appTiers.push(appTier)
+		} // each artifact version
+	} // each tier
+} // each app
 
 property "/myJob/versions", value: versions.join(",")
 property "/myJob/artifactKeys", value: artifactKeys.join(",")
+property "/myJob/appTiers", value: appTiers.join(",")
 
 def clean = getProperty("/myProject/clean").value
 artifacts.each {

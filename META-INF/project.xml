@@ -8,27 +8,26 @@
         <propertyName>ec_setup</propertyName>
         <value>use Cwd;
 use File::Spec;
-
+use POSIX;
 my $dir = getcwd;
 my $logfile =&quot;&quot;;
 my $pluginDir;
 if(defined $ENV{QUERY_STRING}) { # Promotion through UI
-       $logfile   = $ENV{COMMANDER_PLUGINS} . &quot;/$pluginName/ec_setup.log&quot;;
        $pluginDir = $ENV{COMMANDER_PLUGINS} . &quot;/$pluginName&quot;;
 
 } else {
-       $logfile   = $ENV{TEMP} . &quot;/ec_setup.log&quot;;
        $pluginDir = $dir;
 }
+
 $commander-&gt;setProperty(&quot;/plugins/$pluginName/project/pluginDir&quot;,{value=&gt;$pluginDir});
-open(my $fh, '&gt;', $logfile) or die &quot;Could not open file '$logfile' $!&quot;;
-print $fh &quot;Plugin Name: $pluginName\n&quot;;
-print $fh &quot;Current directory: $dir\n&quot;;
+$logfile .= &quot;Plugin Name: $pluginName\n&quot;;
+$logfile .= &quot;Current directory: $dir\n&quot;;
 
 # Evaluate promote.groovy or demote.groovy based on whether plugin is being promoted or demoted ($promoteAction)
 local $/ = undef;
-# If env variable QUERY_STRING exists:
-if(defined $ENV{QUERY_STRING}) { # Promotion through UI
+
+#If env variable QUERY_STRING exists (UI installation) or we are in a step:
+if(defined $ENV{COMMANDER_JOBSTEPID} || defined $ENV{QUERY_STRING}) { 
        open FILE, $ENV{COMMANDER_PLUGINS} . &quot;/$pluginName/dsl/$promoteAction.groovy&quot; or die &quot;Couldn't open file: $!&quot;;
 } else {  # Promotion from the command line
        open FILE, &quot;dsl/$promoteAction.groovy&quot; or die &quot;Couldn't open file: $!&quot;;
@@ -42,17 +41,12 @@ my $dslReponse = $commander-&gt;evalDsl($dsl,
                      }
               )}
 )-&gt;findnodes_as_string(&quot;/&quot;);
-print $fh $dslReponse;
+$logfile .= $dslReponse;
 
-close $fh;
+# Create output property
 
-# Create log file output property
-open LOGFILE, $logfile or die &quot;Couldn't open file: $!&quot;;
-my $logFileContent = &lt;LOGFILE&gt;;
-my $propertyResponse = $commander-&gt;setProperty(&quot;/plugins/$pluginName/project/ec_setup.log&quot;,
-                     {value=&gt;$logFileContent}
-       );
-close LOGFILE;
+my $nowString = localtime;
+$commander-&gt;setProperty(&quot;/plugins/$pluginName/project/logs/$nowString&quot;,{value=&gt;$logfile});
 </value>
       </property>
     </propertySheet>

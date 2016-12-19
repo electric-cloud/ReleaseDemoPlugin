@@ -71,18 +71,21 @@ property "/projects/$pluginName/config/apps", value: '''\
 	[
 		[
 			name: "Account Statements",
-			artifactKey: "statements",
-			versions: ["2.1","2.2","2.3","2.4"]
+			artifactName: "statements",
+			versions: ["2.1","2.2","2.3","2.4"],
+			tiers: ["app":"Apache","db":"Oracle","web":"JBoss"]
 		],
 		[
 			name: "Credit Card Accounts",
-			artifactKey: "cards",
-			versions: ["5.0","5.1","5.5","5.7"]
+			artifactName: "cards",
+			versions: ["5.0","5.1","5.5","5.7"],
+			tiers: ["app":"Apache","db":"Oracle","web":"JBoss"]
 		],
 		[
 			name: "Fund Transfer",
-			artifactKey: "fund",
-			versions: ["1.7","1.8","2.0","2.1"]
+			artifactName: "fund",
+			versions: ["1.7","1.8","2.0","2.1"],
+			tiers: ["app":"Apache","db":"Oracle","web":"JBoss"]
 		]
 	]
 '''.stripIndent()
@@ -94,18 +97,9 @@ def stepDir = pluginDir + "/dsl/steps/"
 project pluginName,{
 	property "clean" // commands to clean up after this plugin
 	property "ec_visibility", value: "all" // Legal values: pickListOnly, hidden, all
-	
 		
-	procedure "createArtifacts",{
-		formalParameter "_versions", defaultValue: '$[/myJob/versions]'
-		formalParameter "_artifactKeys", defaultValue: '$[/myJob/artifactKeys]'
-		formalParameter "_artifactGroup", defaultValue: '$[/myJob/artifactGroup]'
-		
-		step "createArtifacts", shell: "ec-perl",
-			command: new File(pluginDir + "/dsl/steps/createArtifacts.pl").text
-	}
-	
-	procedure "Create Release Model",{
+	procedure "Create Release Model",
+		description: "Run me to create a Release model", {
 	
 		formalParameter "projName", required: "true"
 		formalParameter "artifactGroup", required: "true"
@@ -121,18 +115,27 @@ project pluginName,{
 		step "Set initial clean property", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "initialClean.groovy").text
 		step "Add project to clean list", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "cleanProject.groovy").text
 		step "Set up permissions", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "permissions.groovy").text
-		step "Set up artifacts", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "artifacts.groovy").text
-		step "Publish artifacts", subproject: projectName, subprocedure: "createArtifacts"
+		step "Create Build Procedure", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "build.groovy").text
+		step "Create Application Validation Procedure", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "appValidation.groovy").text
+		//step "Set up artifacts", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "artifacts.groovy").text
+		//step "Publish artifacts", subproject: projectName, subprocedure: "createArtifacts"
 		step "Set up environments", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "env.groovy").text, condition: '$[/myProcedure/runModelSteps]'
 		step "Set up applications", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "app.groovy").text, condition: '$[/myProcedure/runModelSteps]'
-		step "Deploy and snapshot all apps versions to Commit", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "deployCommitSnap.groovy").text, condition: '$[/myProcedure/runModelSteps]'
-		step "Deploy snaphot versions[0] to upper environments", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "deployUpper.groovy").text, condition: '$[/myProcedure/runModelSteps]'
-		//step "Wait for deployments", shell: "ec-perl", command: "sleep 10"
+		step "Create Commit Pipeline", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "commitPipeline.groovy").text, condition: '$[/myProcedure/runModelSteps]'
+		step "Run Commit Pipeline", description: "Builds all versions and creates snapshots for them",
+			subproject: '$[/myJob/projName]',
+			subprocedure: 'Run pipeline',
+			actualParameter: [
+				projName: '$[/myJob/projName]',
+				pipeName: 'Commit'
+			]
+			condition: '$[/myProcedure/runModelSteps]'
+		//step "Deploy snaphot versions[0] to upper environments", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "deployUpper.groovy").text, condition: '$[/myProcedure/runModelSteps]'
 		//step "Set up snapshots", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "snapshots.groovy").text
-		step "Set up pipeline", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "pipeline.groovy").text, condition: '$[/myProcedure/runModelSteps]'
+		step "Set up release pipeline", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "pipeline.groovy").text, condition: '$[/myProcedure/runModelSteps]'
 		step "Set up releases", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "release.groovy").text, condition: '$[/myProcedure/runModelSteps]'
 	} // procedure "Create Release Model"
-
+	
 } // project pluginName
 
 /*
