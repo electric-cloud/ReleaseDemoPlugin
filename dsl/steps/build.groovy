@@ -84,7 +84,7 @@ project projName,{
 				}
 
 				while (getStatus($flowRuntimeId) eq "running") {
-						print "Waiting for pipeline to complete\n";
+						print "Waiting for pipeline to complete\\n";
 						sleep 5;
 				}
 				print getStatus($flowRuntimeId);
