@@ -30,6 +30,7 @@ project projName, {
 										insertRollingDeployManualStep = '1'
 										rollingDeployEnabled = '1'
 									}
+								}
 							} // Each stage
 						} // Deployer application
 					} // Each application
