@@ -18,17 +18,22 @@ project projName, {
 							processName: "Deploy",
 							snapshotName: app.versions[rel.versionIndex], 
 							releaseName: rel.name, {
-								pipe.stages.each { st ->
-									deployerConfiguration environmentName: st,
-										environmentprojectName: projName,
-										stageName: st,
-                                          actualParameter: [
-                                          	changeType: "full"  
-                                          ]
-								} // Each stage
-							} // Deployer application
-						} // Each application
-					} // Deployer
+							pipe.stages.each { st ->
+								def isProd = st.toLowerCase().contains("prod")
+								deployerConfiguration environmentName: st,
+								environmentprojectName: projName,
+								stageName: st,
+								actualParameter: [
+									changeType: "full"  
+								], {
+									if (isProd) {
+										insertRollingDeployManualStep = '1'
+										rollingDeployEnabled = '1'
+									}
+							} // Each stage
+						} // Deployer application
+					} // Each application
+				} // Deployer
 			} // Release
 	} // releases.each
 } // Project
