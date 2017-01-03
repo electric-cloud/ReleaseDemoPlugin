@@ -6,7 +6,11 @@ project projName, {
 	property "normalReleaseMode" // Used to flag whether tasks are run or not; use 0 to run seeding release
 
 	procedure "UpdateTicket"
-	procedure "SeleniumTests"
+	procedure "SeleniumTests",{
+		step "Generate Report", 
+			subproject : '/plugins/$[/myProject/pluginKey]/project',
+			subprocedure: "Generate Reports"
+	}
 
 	pipeline pipe.name, {
 		pipe.stages.eachWithIndex { st, index ->

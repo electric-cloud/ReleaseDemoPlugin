@@ -115,7 +115,7 @@ project pluginName,{
 		step "Set initial clean property", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "initialClean.groovy").text
 		step "Add project to clean list", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "cleanProject.groovy").text
 		step "Set up permissions", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "permissions.groovy").text
-		step "Create Build Procedure", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "build.groovy").text
+		step "Create Procedures", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "procedures.groovy").text
 		step "Create Application Validation Procedure", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "appValidation.groovy").text
 		//step "Set up artifacts", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "artifacts.groovy").text
 		//step "Publish artifacts", subproject: projectName, subprocedure: "createArtifacts"
@@ -135,7 +135,43 @@ project pluginName,{
 		step "Set up release pipeline", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "pipeline.groovy").text, condition: '$[/myProcedure/runModelSteps]'
 		step "Set up releases", shell: "ectool evalDsl --dslFile {0}", command: new File(stepDir + "release.groovy").text, condition: '$[/myProcedure/runModelSteps]'
 	} // procedure "Create Release Model"
-	
+
+	procedure "Generate Reports",{
+		step 'Create Report',
+			subproject : '/plugins/EC-FileOps/project',
+			subprocedure : 'AddTextToFile',
+			actualParameter : [
+				Path: 'summary.html',
+				Content: '''\
+					<html>
+						<head/>
+						<body>
+							<h1>Test Results</h1>
+							<h2>Pipeline Name: $[/myPipelineRuntime/pipelineName]</h2>
+							<h2>Stage: $[/myPipelineStageRuntime/stageName]</h2>
+						</body>
+					</html>
+				'''.stripIndent()
+			]
+		step 'Create pipeline stage link', shell: 'ec-perl',
+			command: '''\
+				use strict;
+				use ElectricCommander();
+				my $ec = new ElectricCommander->new({format=>"json"});
+				$ec->setProperty("/myJob/artifactsDirectory", ".");
+				$ec->setProperty("/myPipelineStageRuntime/ec_summary/Application Deployment Summary",
+					"<html><a href=\\"/commander/jobSteps/$[jobStepId]/summary.html\\">HTML report</a></html");
+			'''.stripIndent()
+		step 'Update release summary', shell: 'ec-perl',
+			command: '''\
+				use strict;
+				use ElectricCommander();
+				my $ec = new ElectricCommander->new({format=>"json"});
+				$ec->setProperty("/myJob/artifactsDirectory", ".");
+				$ec->setProperty("/myReleaseRuntime/ec_releaseSummary/$[/myPipelineStageRuntime/stageName]",
+					"<html><li><a href=\\"/commander/jobSteps/$[jobStepId]/summary.html\\">$[/myPipelineStageRuntime/stageName] Deployment Report</a></li></html");
+			'''.stripIndent()
+	} // procedure "Generate Reports"	
 } // project pluginName
 
 /*
