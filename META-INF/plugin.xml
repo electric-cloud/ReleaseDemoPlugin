@@ -1,7 +1,7 @@
 <plugin>
   <author>Electric Cloud</author>
   <authorUrl></authorUrl>
-  <category>Utility</category>
+  <category>Demo</category>
   <commander-version min="5.0" />
   <description>Creates a procedure that can be used to create a functional release demo</description>
   <help>help.xml</help>
