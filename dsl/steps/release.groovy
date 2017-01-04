@@ -29,6 +29,11 @@ project projName, {
 									if (isProd) {
 										insertRollingDeployManualStep = '1'
 										rollingDeployEnabled = '1'
+										rollingDeployManualStepCondition = 'always'
+										rollingDeployPhases = 'Blue, Green'
+										rollingDeployManualStepAssignee = [
+											'admin',
+										]
 									}
 								}
 							} // Each stage
