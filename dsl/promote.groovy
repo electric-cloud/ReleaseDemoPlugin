@@ -25,8 +25,7 @@ startStopDates = []
 }
 
 /********* User editable properties ************/
-property "/projects/$pluginName/config/projName", value: "Online banking"
-property "/projects/$pluginName/config/artifactGroup", value: "com.acmebank.apps"
+
 /*
 	versionIndex selects the version from apps.versions[].  Use apps.version[0]
 	for initial environment snapshots.  Make sure that there are as many versions
@@ -39,7 +38,9 @@ property "/projects/$pluginName/config/artifactGroup", value: "com.acmebank.apps
 	plannedEndDate: (String) formatDate(new Date()+14),
 */
 
-property "/projects/$pluginName/config/releases", value: """\
+def projName="Online banking"
+def artifactGroup="com.acmebank.apps"
+def releases="""\
 	[
 		[
 			name: "${startStopDates[0].month} Online Banking",
@@ -60,14 +61,14 @@ property "/projects/$pluginName/config/releases", value: """\
 			versionIndex: 3
 		],
 	]
-""".stripIndent()
-property "/projects/$pluginName/config/pipe", value: '''\
+	""".stripIndent()
+def pipe='''\
 	[
 		name: "Monthly Online Banking",
 		stages: ["UAT", "STG", "PROD"]
 	]
-'''.stripIndent()
-property "/projects/$pluginName/config/apps", value: '''\
+	'''.stripIndent()
+def apps='''\
 	[
 		[
 			name: "Account Statements",
@@ -88,9 +89,34 @@ property "/projects/$pluginName/config/apps", value: '''\
 			tiers: ["app":"Apache","db":"Oracle","web":"JBoss"]
 		]
 	]
-'''.stripIndent()
+	'''.stripIndent()
 /********* End of user editable properties ************/
 
+property "/projects/$pluginName/config/projName", value: projName
+property "/projects/$pluginName/config/artifactGroup", value: artifactGroup
+property "/projects/$pluginName/config/releases", value: releases
+property "/projects/$pluginName/config/pipe", value: pipe
+property "/projects/$pluginName/config/apps", value: apps
+
+
+// Create run-procedure DSL template and store in property
+property "/projects/$pluginName/dslRunProcedureTemplate", value: """\
+	runProcedure projectName: "/plugins/$pluginKey/project",
+		procedureName: "Create Release Model",
+		actualParameter: [
+			projName: "$projName",
+			artifactGroup: "$artifactGroup",
+			apps: \'\'\'\\
+				$apps
+			\'\'\'.stripIndent(),
+			pipe: \'\'\'\\
+				$pipe
+			\'\'\'.stripIndent(),
+			releases: \'\'\'\\
+				$releases
+			\'\'\'.stripIndent()
+	]
+	""".stripIndent()
 
 // Build resource model
 def stepDir = pluginDir + "/dsl/steps/"
