@@ -14,13 +14,19 @@ def formatDate(d) {
 
 // Create an array of start and stop dates for releases
 startStopDates = []
+// Find the next Monday
+def start = new Date()
+while (start.day != 1) {
+  start += 1
+}
+// Stop on next week's Friday
+def stop = start + 11
+
 (0..2).each {
-    def start = new Date() + 2 + (it * 33)
-    def stop = new Date()  + (it * 33 + 33)
     startStopDates.push(
-        start: formatDate(start),
-        stop: formatDate(stop),
-        month: new java.text.DateFormatSymbols().months[start.month]
+		label: "Biweekly " + (it+1) + "-" + (start.year + 1900),
+		start: formatDate(start + it * 14),
+		stop: formatDate(stop + it * 14),
     )
 }
 
@@ -43,19 +49,19 @@ def artifactGroup="com.acmebank.apps"
 def releases="""\
 	[
 		[
-			name: "${startStopDates[0].month} Online Banking",
+			name: "${startStopDates[0].label}",
 			plannedStartDate: "${startStopDates[0].start}",
 			plannedEndDate: "${startStopDates[0].stop}",
 			versionIndex: 1
 		],
 		[
-			name: "${startStopDates[1].month} Online Banking",
+			name: "${startStopDates[1].label}",
 			plannedStartDate: "${startStopDates[1].start}",
 			plannedEndDate: "${startStopDates[1].stop}",
 			versionIndex: 2
 		],		
 		[
-			name: "${startStopDates[2].month} Online Banking",
+			name: "${startStopDates[2].label}",
 			plannedStartDate: "${startStopDates[2].start}",
 			plannedEndDate: "${startStopDates[2].stop}",
 			versionIndex: 3
@@ -64,7 +70,7 @@ def releases="""\
 	""".stripIndent()
 def pipe='''\
 	[
-		name: "Monthly Online Banking",
+		name: "Biweekly Sprints",
 		stages: ["UAT", "STG", "PROD"]
 	]
 	'''.stripIndent()
