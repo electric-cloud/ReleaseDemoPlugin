@@ -3,6 +3,7 @@ def artifactGroup = "$[/myJob/artifactGroup]"
 def apps = $[/myJob/apps]
 
 new File("installer.sh").createNewFile()
+new File("installer.bat").createNewFile()
 
 def artifacts = []
 def versions = []

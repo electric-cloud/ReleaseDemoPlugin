@@ -34,6 +34,11 @@ project projName,{
 					echo creating installer.sh
 					echo echo Installing \$[appName] \$[artGroup].\$[artName]:${artKey}:\$[artVersion]-\$[/myProject/buildCount] > installer.sh
 					echo exit \$[causeRollback] >> installer.sh
+					
+					echo creating installer.bat
+					echo echo Installing \$[appName] \$[artGroup].\$[artName]:${artKey}:\$[artVersion]-\$[/myProject/buildCount] > installer.bat
+					echo exit \$[causeRollback] >> installer.bat
+					
 					exit \$[buildErrorLevel]
 				""".stripIndent()
 				
@@ -43,7 +48,7 @@ project projName,{
 				actualParameter : [
 					artifactName: (String) "\$[artGroup].\$[artName]:${artKey}",
 					artifactVersionVersion: '$[artVersion]-$[/myProject/buildCount]',
-					includePatterns: 'installer.sh',
+					includePatterns: 'installer.sh;installer.bat',
 					repositoryName: 'default'
 				]
 		} // each tier (artifact key)
